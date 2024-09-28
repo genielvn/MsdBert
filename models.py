@@ -229,9 +229,17 @@ class MsdBERT(nn.Module):
         """
         This sequence_output gives str!
         """
-        sequence_output, pooled_output = self.bert(input_ids=input_ids, token_type_ids=None, attention_mask=input_mask)
-        hashtag_output, hashtag_pooled_output = self.hashtag_bert(input_ids=hashtag_input_ids, token_type_ids=None,
+        # sequence_output, pooled_output = self.bert(input_ids=input_ids, token_type_ids=None, attention_mask=input_mask)
+        bert1_output = self.bert(input_ids=input_ids, token_type_ids=None, attention_mask=input_mask)
+        sequence_output = bert1_output[0]
+        pooled_output = bert1_output[1]
+
+        # hashtag_output, hashtag_pooled_output = self.hashtag_bert(input_ids=hashtag_input_ids, token_type_ids=None,attention_mask=hashtag_input_mask)
+        hashtag_bert_output = self.hashtag_bert(input_ids=hashtag_input_ids, token_type_ids=None,
                                                                   attention_mask=hashtag_input_mask)
+        hashtag_output = hashtag_bert_output[0]
+        hashtag_pooled_output = hashtag_bert_output[1] 
+        
         # added_attention_mask batch_size*124
         # img_mask # b*49
         img_mask = added_attention_mask[:, :49]
@@ -254,6 +262,7 @@ class MsdBERT(nn.Module):
         print(f"def forward() at MsdBERT Class (models.py): extended_img_mask type is: {type(extended_img_mask )} = {extended_img_mask}")
         image_text_cross_attn = self.text2image_attention(sequence_output, visual, extended_img_mask)
         # b*75*12
+        print(f"def forward() at MsdBERT Class (models.py): sequence_output type is: {type(sequence_output )} = {sequence_output} BEFORE SELF.TANH")
         C = self.tanh(torch.matmul(torch.matmul(sequence_output, self.W_b), hashtag_output.transpose(1,2)))
         # C: b*12
         C, _ = torch.max(C, dim=1)
