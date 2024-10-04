@@ -91,7 +91,6 @@ class BertCoAttention(nn.Module):
 
     def forward(self, s1_hidden_states, s2_hidden_states, s2_attention_mask):
         # s2_attention_mask  b*1*1*49
-        print(f"def forward() at BertCoAttention Class (models.py): s1_hidden_state type is: {type(s1_hidden_states)} = {s1_hidden_states}")
 
         """
         S1_HIDDEN_STATES IS FOUND TO BE A STRING.
@@ -161,7 +160,6 @@ class BertCrossAttention(nn.Module):
         self.output = BertSelfOutput()
 
     def forward(self, s1_input_tensor, s2_input_tensor, s2_attention_mask):
-        print(f"def forward() at BertCorssAttention Class (models.py): s1_input_tensor type is: {type(s1_input_tensor )} = {s1_input_tensor}")
         """
         PLEASE ALSO CHECK IF THIS INPUT TENSORS ARE REALLY TENSORS OR STRING. (last check was str.)
         """
@@ -181,7 +179,6 @@ class BertCrossAttentionLayer(nn.Module):
         self.output = BertOutput()
 
     def forward(self, s1_hidden_states, s2_hidden_states, s2_attention_mask):
-        print(f"def forward() at BertCrossAttentionLayer Class (models.py): s1_hidden_states type is: {type(s1_hidden_states )} = {s1_hidden_states}")
         attention_output = self.bertCrossAttn(s1_hidden_states, s2_hidden_states, s2_attention_mask)
         # b*75*768
         intermediate_output = self.intermediate(attention_output)
@@ -203,11 +200,7 @@ class BertCrossEncoder(nn.Module):
                 I want this checked. See logs. 
                 THIS IS WHAT CAUSES TO BE A STRING
             """
-            print(f"def forward() at BertCrossEncoder Class (models.py): s1_hidden_states type is: {type(s1_hidden_states )} = {s1_hidden_states}")
-            print(f"def forward() at BertCrossEncoder Class (models.py): s2_hidden_states type is: {type(s2_hidden_states )} = {s2_hidden_states}")
-            print(f"def forward() at BertCrossEncoder Class (models.py): s2_attention_mask type is: {type(s2_attention_mask )} = {s2_attention_mask}")
             s1_hidden_states = layer_module(s1_hidden_states, s2_hidden_states, s2_attention_mask)
-            print(f"def forward() at BertCrossEncoder Class (models.py): s1_hidden_states type is: {type(s1_hidden_states )} = {s1_hidden_states} !!AFTER!!")
         return s1_hidden_states
 
 
@@ -257,12 +250,8 @@ class MsdBERT(nn.Module):
         """
             Cross-attention?
         """
-        print(f"def forward() at MsdBERT Class (models.py): sequence_output type is: {type(sequence_output )} = {sequence_output}")
-        print(f"def forward() at MsdBERT Class (models.py): visual type is: {type(visual )} = {visual}")
-        print(f"def forward() at MsdBERT Class (models.py): extended_img_mask type is: {type(extended_img_mask )} = {extended_img_mask}")
         image_text_cross_attn = self.text2image_attention(sequence_output, visual, extended_img_mask)
         # b*75*12
-        print(f"def forward() at MsdBERT Class (models.py): sequence_output type is: {type(sequence_output )} = {sequence_output} BEFORE SELF.TANH")
         C = self.tanh(torch.matmul(torch.matmul(sequence_output, self.W_b), hashtag_output.transpose(1,2)))
         # C: b*12
         C, _ = torch.max(C, dim=1)
