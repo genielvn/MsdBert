@@ -207,8 +207,8 @@ class BertCrossEncoder(nn.Module):
 class MsdBERT(nn.Module):
     def __init__(self):
         super(MsdBERT, self).__init__()
-        self.bert = RobertaModel.from_pretrained('roberta-base')
-        self.hashtag_bert = RobertaModel.from_pretrained('roberta-base')
+        self.bert = RobertaModel.from_pretrained('roberta-base-uncased')
+        self.hashtag_bert = RobertaModel.from_pretrained('roberta-base-uncased')
         self.tanh = nn.Tanh()
         self.text2image_attention = BertCrossEncoder()
         self.image_text_pooler = BertPooler()
@@ -274,7 +274,7 @@ class MsdBERT(nn.Module):
 class Res_BERT(nn.Module):
     def __init__(self):
         super(Res_BERT, self).__init__()
-        self.bert = RobertaModel.from_pretrained('roberta-base')
+        self.bert = RobertaModel.from_pretrained('roberta-base-uncased')
         self.dropout = nn.Dropout(0.1)
         self.classifier = nn.Linear(768, 2)
         self.vismap2text = nn.Linear(2048, 768)
@@ -302,7 +302,7 @@ class Res_BERT(nn.Module):
 class BertOnly(nn.Module):
     def __init__(self):
         super(BertOnly, self).__init__()
-        self.bert = RobertaModel.from_pretrained('roberta-base')
+        self.bert = RobertaModel.from_pretrained('roberta-base-uncased')
         self.dropout = nn.Dropout(0.1)
         self.classifier = nn.Linear(768, 2)
 
