@@ -9,7 +9,7 @@ import torchvision
 from sklearn.metrics import precision_recall_fscore_support
 from torch.utils.data import TensorDataset, DataLoader, RandomSampler, SequentialSampler
 from tqdm import tqdm, trange
-from transformers import BertTokenizer
+from transformers import XLMRobertaTokenizer
 
 from models import MsdBERT, BertOnly, ResNetOnly, Res_BERT
 from optimizer import BertAdam
@@ -43,7 +43,7 @@ def main():
     parser.add_argument("--image_dir",
                         default='../image',
                         type=str)
-    parser.add_argument("--bert_model", default="bert-base-uncased", type=str,
+    parser.add_argument("--bert_model", default="xlm-roberta-base", type=str,
                         help="Bert pre-trained model selected in the list: bert-base-uncased, "
                              "bert-large-uncased, bert-base-cased, bert-large-cased, bert-base-multilingual-uncased, "
                              "bert-base-multilingual-cased, bert-base-chinese.")
@@ -128,7 +128,7 @@ def main():
                           args.max_hashtag_length)
 
     label_list = processor.get_labels()
-    tokenizer = BertTokenizer.from_pretrained(args.bert_model, do_lower_case=True)
+    tokenizer = XLMRobertaTokenizer.from_pretrained(args.bert_model, do_lower_case=True)
 
     train_examples = None
     num_train_steps = None
