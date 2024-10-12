@@ -53,6 +53,9 @@ class Processer():
 
     def get_test_examples(self):
         return self._create_examples(os.path.join(self.data_dir, "test.txt"))
+    
+    def get_one_example(self):
+        return self._create_examples(os.path.join(self.data_dir, "one.txt"))
 
     def get_labels(self):
         return [0, 1]

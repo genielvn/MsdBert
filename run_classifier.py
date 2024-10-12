@@ -70,6 +70,9 @@ def main():
     parser.add_argument("--do_test",
                         action='store_true',
                         help="Whether to run on the test set.")
+    parser.add_argument("--one",
+                        action='store_true',
+                        help="Only use one example.")
     parser.add_argument("--train_batch_size",
                         default=32,
                         type=int,
@@ -291,14 +294,14 @@ def main():
                 max_acc = eval_accuracy
 
     if args.do_test:
-        model.load_state_dict(torch.load(output_model_file))
-        encoder.load_state_dict(torch.load(output_encoder_file))
+        model.load_state_dict(torch.load(output_model_file, map_location=device))
+        encoder.load_state_dict(torch.load(output_encoder_file, map_location=device) )
         model.to(device)
         encoder.to(device)
         model.eval()
         encoder.eval()
 
-        test_examples = processor.get_test_examples()
+        test_examples = processor.get_one_example() if args.one else processor.get_test_examples() 
         logger.info("***** Running evaluation on Test Set*****")
         logger.info("  Num examples = %d", len(test_examples))
         logger.info("  Batch size = %d", args.eval_batch_size)
@@ -341,6 +344,9 @@ def main():
 
         true_label = np.concatenate(true_label_list)
         pred_outputs = np.concatenate(pred_label_list)
+
+        logger.info(f"true labels: {true_label_list}")
+        logger.info(f"pred labels: {pred_label_list}")
 
         precision, recall, F_score = macro_f1(true_label, pred_outputs)
         result = {'test_loss': eval_loss,
