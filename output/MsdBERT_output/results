@@ -1,0 +1,12 @@
+Epoch: 100% 8/8 [03:56<00:00, 29.55s/it]
+10/16/2024 08:26:30 - INFO - __main__ -   ***** Running evaluation on Test Set*****
+10/16/2024 08:26:30 - INFO - __main__ -     Num examples = 450
+10/16/2024 08:26:30 - INFO - __main__ -     Batch size = 16
+10/16/2024 08:26:31 - INFO - utils -   processed image num: 0 **********
+10/16/2024 08:26:55 - INFO - __main__ -   ***** Test Eval results *****
+10/16/2024 08:26:55 - INFO - __main__ -     f_score = 0.8886689757545769
+10/16/2024 08:26:55 - INFO - __main__ -     precision = 0.888335408883354
+10/16/2024 08:26:55 - INFO - __main__ -     recall = 0.8895675107576989
+10/16/2024 08:26:55 - INFO - __main__ -     test_accuracy = 0.8888888888888888
+10/16/2024 08:26:55 - INFO - __main__ -     test_loss = 0.40867778556100254
+10/16/2024 08:26:55 - INFO - __main__ -     train_loss = 0.006927698844998715
