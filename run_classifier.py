@@ -114,6 +114,7 @@ def main():
     torch.manual_seed(args.seed)
     torch.cuda.manual_seed(args.seed)
     random.seed(args.seed)
+
     if n_gpu > 0:
         torch.cuda.manual_seed_all(args.seed)
 
@@ -157,12 +158,6 @@ def main():
     encoder = myResnet(net).to(device)
 
     if n_gpu > 1:
-        """
-        https://pytorch.org/docs/stable/generated/torch.nn.DataParallel.html
-        since we only have 1 GPU, this will not be used.
-
-        else, we can do data parallel with the current model we using (hence the MsdBERT)
-        """
         model = torch.nn.DataParallel(model)
         encoder = torch.nn.DataParallel(encoder)
     param_optimizer = list(model.named_parameters())
