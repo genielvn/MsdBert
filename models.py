@@ -282,7 +282,8 @@ class Res_BERT(nn.Module):
     def forward(self, input_ids, visual_embeds_att, input_mask, added_attention_mask, hashtag_input_ids,
                 hashtag_input_mask, labels=None):
         # b*75*768
-        sequence_output, pooled_output = self.bert(input_ids=input_ids, token_type_ids=None, attention_mask=input_mask)
+        bert_model = self.bert(input_ids=input_ids, token_type_ids=None, attention_mask=input_mask)
+        sequence_output, pooled_output = bert_model[0], bert_model[1]
         # batchsize*49*2048
         vis_embed_map = visual_embeds_att.view(-1, 2048, 49).permute(0, 2, 1)
         # b*49*768
